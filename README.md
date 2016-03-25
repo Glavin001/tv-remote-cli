@@ -1,4 +1,5 @@
 # tv-remote-cli
+[![NPM](https://nodei.co/npm/tv-remote-cli.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/tv-remote-cli/)
 > CLI for remotely controlling your Smart TV
 
 ---
@@ -11,18 +12,20 @@ npm install -g tv-remote-cli
 
 ## Features
 
-- [x] Send TV commands to Smart TV
-- [x] Automatically find and connect to Smart TV
+- Send TV commands to Smart TV
+- Automatically find and connect to Smart TV
 
   ```bash
 connect 192.168.1.126
 ```
-or automatically find Smart TV with
-```bash
+
+  or automatically find Smart TV with
+
+  ```bash
 connect
 ```
 
-- [x] Send commands repeatedly
+- Send commands repeatedly
 
   Volume Up 3 times
 
