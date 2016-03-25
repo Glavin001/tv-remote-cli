@@ -108,7 +108,7 @@ for (let key of remoteKeys) {
   let command = `${commandName} [repeat] [delay]`;
   // Add command
   vorpal
-    .command(command, `Press ${command} key (KEY_${key})`)
+    .command(command, `Press ${commandName} key (KEY_${key})`)
     .action(function(args, callback) {
       let repeat = args.repeat || 1;
       let delay = args.delay || 300;
