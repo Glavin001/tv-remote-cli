@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict';
 var vorpal = require('vorpal')();
 var SamsungRemote = require('samsung-remote');

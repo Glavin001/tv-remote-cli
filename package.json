@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "CLI for remotely controlling your Smart TV",
   "main": "index.js",
-  "bin": "index.js",
+  "bin": {
+    "tv-remote": "index.js"
+  },
   "global": true,
   "dependencies": {
     "samsung-remote": "^1.2.5",
