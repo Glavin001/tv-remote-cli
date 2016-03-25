@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 'use strict';
-var vorpal = require('vorpal')();
-var SamsungRemote = require('samsung-remote');
+const vorpal = require('vorpal')();
+const SamsungRemote = require('samsung-remote');
+const findTV = require('find-tv');
+const async = require('async');
 
-var remote = null
-var send = function(key, callback) {
+let remote = null
+const send = function(key, callback) {
     if (remote) {
         return remote.send("KEY_"+key, callback);
     } else {
@@ -12,8 +14,8 @@ var send = function(key, callback) {
     }
 }
 
-var remoteKeys = [
-  "ENTER",/*"EXIT",*/
+const remoteKeys = [
+  "ENTER","EXIT",
   "MENU","UP","DOWN","LEFT","RIGHT",
   "3","VOLUP","4","5","6","VOLDOWN","7","8","9",
   "MUTE","CHDOWN","0",
@@ -21,7 +23,7 @@ var remoteKeys = [
   "SOURCE","INFO","PIP_ONOFF","PIP_SWAP","PLUS100","CAPTION","PMODE",
   "TTX_MIX","TV","PICTURE_SIZE","AD","PIP_SIZE","MAGIC_CHANNEL",
   "PIP_SCAN","PIP_CHUP","PIP_CHDOWN","DEVICE_CONNECT",
-  /*"HELP",*/"ANTENA","CONVERGENCE","11","12","AUTO_PROGRAM",
+  "HELP","ANTENA","CONVERGENCE","11","12","AUTO_PROGRAM",
   "FACTORY","3SPEED","RSURF","ASPECT","TOPMENU","GAME","QUICK_REPLAY",
   "STILL_PICTURE","DTV","FAVCH","REWIND","STOP","PLAY","FF","REC","PAUSE",
   "TOOLS","INSTANT_REPLAY","LINK","FF_","GUIDE","REWIND_","ANGLE","RESERVED1",
@@ -58,11 +60,27 @@ var remoteKeys = [
 vorpal
   .command("connect [ip]", "Connect to TV")
   .action(function(args, callback) {
-    remote = new SamsungRemote({
-            ip: args.ip // '192.168.1.126' // required: IP address of your Samsung Smart TV
-    });
-    this.log('Connecting to '+args.ip);
-    callback();
+    if (args.ip) {
+        remote = new SamsungRemote({
+                ip: args.ip // '192.168.1.126' // required: IP address of your Samsung Smart TV
+        });
+        this.log('Connecting to '+args.ip);
+        callback();
+    } else { 
+        findTV((error, ip) => {
+            if (error) {
+                return callback(error);
+            }
+            if (!ip) {
+                return callback(new Error('No Smart TV found.'));
+            }
+            this.log('Connecting to '+ip);
+            remote = new SamsungRemote({
+                ip: ip
+            });
+            callback();
+        });
+    }
   });
 vorpal
   .command("alive", "Check if TV is alive")
@@ -80,14 +98,37 @@ vorpal
         return callback(new Error("No remote."));
     }
   });
+
 for (let key of remoteKeys) {
-  let lowerKey = key.toLowerCase();
+  let commandName = key.toLowerCase();//.split('_').join(' ');
+  // Check to see if command already exists
+  if (vorpal.find(commandName)) {
+    commandName = `tv_${commandName}`;
+  }
+  let command = `${commandName} [repeat] [delay]`;
+  // Add command
   vorpal
-    .command(lowerKey, `Press ${lowerKey} key`)
+    .command(command, `Press ${command} key (KEY_${key})`)
     .action(function(args, callback) {
-      return send(key, callback);
+      let repeat = args.repeat || 1;
+      let delay = args.delay || 300;
+      let tasks = [];
+      for (var i=1; i<=repeat; i++) { 
+          tasks.push(key); 
+          if (i!==repeat) { 
+              tasks.push(delay); 
+          }
+      }
+      async.eachSeries(tasks, (task, callback) => {
+        if (typeof task === "string") {
+            return send(task, callback);
+        } else {
+            return setTimeout(callback, task);
+        }
+      }, callback);
     });
 }
+
 
 vorpal
   .delimiter('TV$')
