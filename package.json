@@ -1,0 +1,34 @@
+{
+  "name": "tv-remote-cli",
+  "version": "0.1.0",
+  "description": "CLI for remotely controlling your Smart TV",
+  "main": "index.js",
+  "bin": "index.js",
+  "global": true,
+  "dependencies": {
+    "samsung-remote": "^1.2.5",
+    "vorpal": "^1.10.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Glavin001/tv-remote-cli.git"
+  },
+  "keywords": [
+    "tv",
+    "remote",
+    "samsung",
+    "cli",
+    "control"
+  ],
+  "author": "Glavin Wiechert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Glavin001/tv-remote-cli/issues"
+  },
+  "homepage": "https://github.com/Glavin001/tv-remote-cli#readme"
+}
