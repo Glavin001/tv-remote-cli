@@ -9,8 +9,8 @@
   "global": true,
   "dependencies": {
     "async": "^2.0.0-rc.2",
-    "find-tv": "^0.1.1",
-    "samsung-remote": "^1.2.5",
+    "find-tv": "^0.1.2",
+    "samsung-remote": "git+https://github.com/Glavin001/samsung-remote.git#patch-1",
     "vorpal": "^1.10.9"
   },
   "devDependencies": {},
