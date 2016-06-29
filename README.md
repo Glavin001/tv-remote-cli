@@ -12,6 +12,7 @@ npm install -g tv-remote-cli
 
 ## Features
 
+- Currently only supports Samsung Smart TVs. See [`samsung-remote` package](https://github.com/natalan/samsung-remote) for more information.
 - Send TV commands to Smart TV
 - Automatically find and connect to Smart TV
 
