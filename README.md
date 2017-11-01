@@ -17,14 +17,14 @@ npm install -g tv-remote-cli
 - Automatically find and connect to Smart TV
 
   ```bash
-connect 192.168.1.126
-```
+  connect 192.168.1.126
+  ```
 
   or automatically find Smart TV with
 
   ```bash
-connect
-```
+  connect
+  ```
 
 - Send commands repeatedly
 
